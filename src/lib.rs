@@ -1,4 +1,3 @@
-#![feature(try_trait)]
 #![allow(non_snake_case)]
 #[macro_use]
 extern crate serde_derive;
@@ -35,11 +34,11 @@ pub enum BlockError {
     ParseIntError(#[source] std::num::ParseIntError),
 }
 
-impl From<std::option::NoneError> for BlockError {
+/*impl From<std::option::NoneError> for BlockError {
     fn from(_: std::option::NoneError) -> Self {
         Self::NoneError
     }
-}
+}*/
 
 pub trait Range {
     type Err: std::error::Error;
@@ -140,9 +139,15 @@ impl FromStr for V4Prefix {
     type Err = BlockError;
     fn from_str(s: &str) -> Result<V4Prefix, BlockError> {
         let parts: Vec<&str> = s.split('/').collect();
-        let ip: [u8; 4] = Ipv4Addr::from_str(parts.get(0)?)?.octets();
-        //print!("parts: {}, ", parts.get(1)?);
-        let prefix = parts.get(1)?.parse::<u8>()?;
+        let ip: [u8; 4] = Ipv4Addr::from_str(match parts.get(0) {
+            Some(value) => value,
+            None => return Err(BlockError::NoneError),
+        })?.octets();
+        
+        let prefix = match parts.get(1) {
+            Some(value) => value,
+            None => return Err(BlockError::NoneError),
+        }.parse::<u8>()?;
         //print!("prefix: {} ", prefix);
         Ok(Self { ip, prefix })
     }
@@ -207,8 +212,14 @@ impl FromStr for V6Prefix {
     type Err = BlockError;
     fn from_str(s: &str) -> Result<V6Prefix, BlockError> {
         let parts: Vec<&str> = s.split('/').collect();
-        let ip: [u16; 8] = Ipv6Addr::from_str(parts.get(0)?)?.segments();
-        let prefix = parts.get(1)?.parse::<u8>()?;
+        let ip: [u16; 8] = Ipv6Addr::from_str(match parts.get(0) {
+            Some(value) => value,
+            None => return Err(BlockError::NoneError),
+        })?.segments();
+        let prefix = match parts.get(1) {
+            Some(value) => value,
+            None => return Err(BlockError::NoneError),
+        }.parse::<u8>()?;
         Ok(Self { ip, prefix })
     }
 }
@@ -323,7 +334,7 @@ impl Blocker {
                 ]).output().await?;
                 if !output.status.success() {
                     let code = output.status.code().unwrap();
-                    let out = String::from_utf8(output.stdout)?;
+                    let stdout = String::from_utf8(output.stdout)?;
                     return Err(BlockError::CommandFailed((stdout, code)));
                 }
             }
