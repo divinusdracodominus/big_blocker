@@ -327,7 +327,7 @@ impl Blocker {
                     "rule",
                     "name=\"BigBlocker\"",
                     "dir=out",
-                    "action=deny",
+                    "action=block",
                     "enable=yes",
                     &format!("remoteip={}", ip),
                     "profile=public"
