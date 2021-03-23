@@ -1,0 +1,16 @@
+these derivations will be built:
+  /nix/store/30hi3jp58f7s25ywwdsx11pi6lhzkzg6-source.drv
+  /nix/store/sj793ks0mr82y1dajmqwh3ch2jlrfba7-big-blocker.drv
+building '/nix/store/30hi3jp58f7s25ywwdsx11pi6lhzkzg6-source.drv'...
+
+trying https://github.com/divinusdracodominus/big_blocker/archive/b3a4dd90f7683dc0a27a1447ed15e7385f8a8789.tar.gz
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   173  100   173    0     0   2507      0 --:--:-- --:--:-- --:--:--  2507
+100 56515    0 56515    0     0   107k      0 --:--:-- --:--:-- --:--:--  107k
+unpacking source archive /build/b3a4dd90f7683dc0a27a1447ed15e7385f8a8789.tar.gz
+hash mismatch in fixed-output derivation '/nix/store/1ykwjzs8c7a8s7i5fh77zqylk12chv8h-source':
+  wanted: sha256:1fyigc5vwijxb911v1mzzrapx4hpimndsdp7ikam0s0lgahzg015
+  got:    sha256:0vx3rr78cxjwpfdqx5ymgiq20ydryi07wm9aqpw812hm155z808k
+cannot build derivation '/nix/store/sj793ks0mr82y1dajmqwh3ch2jlrfba7-big-blocker.drv': 1 dependencies couldn't be built
+error: build of '/nix/store/sj793ks0mr82y1dajmqwh3ch2jlrfba7-big-blocker.drv' failed

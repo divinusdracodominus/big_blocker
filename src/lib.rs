@@ -297,6 +297,7 @@ impl Blocker {
     pub async fn block(&self) -> Result<(), BlockError> {
         for ip in self.ips.iter() {
             if cfg!(target_os = "linux") || cfg!(target_os = "macos") {
+                // replace OUTPUT with FORWARD if blocking NAT
                 let output = tokio::process::Command::new("iptables")
                     .args(&["-A", "OUTPUT", "-d", &format!("{}", ip), "-j", "DROP"])
                     .output()
@@ -311,19 +312,19 @@ impl Blocker {
                 let output = tokio::process::Command::new("netsh").args(&[
                     "advfirewall",
                     "firewall",
-                    "rule",
                     "add",
-                    "name=\"Big Blocker\"",
+                    "rule",
+                    "name=\"BigBlocker\"",
                     "dir=out",
                     "action=deny",
                     "enable=yes",
                     &format!("remoteip={}", ip),
-                    "profile=domain"
+                    "profile=public"
                 ]).output().await?;
                 if !output.status.success() {
                     let code = output.status.code().unwrap();
-                    let stderr = String::from_utf8(output.stderr)?;
-                    return Err(BlockError::CommandFailed((stderr, code)));
+                    let out = String::from_utf8(output.stdout)?;
+                    return Err(BlockError::CommandFailed((stdout, code)));
                 }
             }
         }
@@ -349,8 +350,8 @@ impl Blocker {
                 .await?;
             if !output.status.success() {
                 let code = output.status.code().unwrap();
-                let stderr = String::from_utf8(output.stderr)?;
-                return Err(BlockError::CommandFailed((stderr, code)));
+                let stdout = String::from_utf8(output.stdout)?;
+                return Err(BlockError::CommandFailed((stdout, code)));
             }
         }
         Ok(())
