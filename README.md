@@ -6,3 +6,6 @@ first install cargo by going to [rust install](https://https://www.rust-lang.org
 note this tool is destributed in source format because to do otherwise would make me a hypocrit
 once installed navigate to the source code of this repository and run cargo run --release
 then run ./target/release/cross-block --block amazon google etc (this must be done as an administrator)
+
+## Feature plans
+boycots of companies that misuse peopels data
