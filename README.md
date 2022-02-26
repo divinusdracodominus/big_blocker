@@ -7,5 +7,5 @@ note this tool is destributed in source format because to do otherwise would mak
 once installed navigate to the source code of this repository and run cargo run --release
 then run ./target/release/cross-block --block amazon google etc (this must be done as an administrator)
 
-## Feature plans
-boycots of companies that misuse peopels data
+## Future To Dos
+use RADb and route-views as well as whois or RDAP to query information about given IP addresses and address ranges
